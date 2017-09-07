@@ -29,6 +29,20 @@ with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'secrets.json
 
 TO_REGISTER = 'Confirmed (to register)'
 
+
+def dump_csv(res, output_filename, from_date):
+	keys = res[0].keys()
+	final_output_filename = '_'.join(['Output_sendmail_', 
+										output_filename, 
+										from_date.strftime('%y%m%d'), 
+										datetime.datetime.now().strftime('%H%M')
+										]) + '.csv'
+	# with open('output_Search_booking_id_' + from_date.strftime('%y%m%d') + '_' + datetime.datetime.now().strftime('%H%M') + '_' + str(duration) + 'd.csv', 'w', newline='', encoding='utf-8') as output_file:
+	with open(final_output_filename, 'w', newline='', encoding='utf-8') as output_file:
+		dict_writer = csv.DictWriter(output_file, keys)
+		dict_writer.writeheader()
+		dict_writer.writerows(res)
+
 @click.command()
 @click.option('--filename', default='Output_hotel_ref_*.csv')
 @click.option('--email', default='no-reply@gta-travel.com')
@@ -155,6 +169,11 @@ def sendmail_win_ctrip(filename, email):
 		m.send_and_save()
 
 		print('Message sent to ... ... ' + str(booking['hotel_email']))
+
+		booking['email_sent'] = 'Y'
+		res.append(booking)
+
+	dump_csv(res, output, datetime.datetime.today().date())
 
 	# fromaddr = "tctctcly@gmail.com"
 	# # toaddr = "yu.leng@gta-travel.com, l"

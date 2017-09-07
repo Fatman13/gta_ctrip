@@ -180,7 +180,7 @@ CONFIRMED = 'Confirmed or Completed'
 HOTEL_CONFIRMED = 'Confirmed (registered )'
 
 
-def dump_csv(res, output_filename):
+def dump_csv(res, output_filename, from_date):
 	keys = res[0].keys()
 	final_output_filename = '_'.join(['Output_hotel_ref_', 
 										output_filename, 
@@ -350,7 +350,7 @@ def hc_ctrip(filename, output):
 
 	driver.quit()
 
-	dump_csv(res, output)
+	dump_csv(res, output, datetime.datetime.today().date())
 
 	# keys = res[0].keys()
 	# with open('output_hotel_ref_' + datetime.datetime.now().strftime('%y%m%d_%H%M') + '.csv', 'w', newline='', encoding='utf-8') as output_file:

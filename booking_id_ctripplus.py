@@ -28,7 +28,7 @@ def daterange(start_date, end_date):
 # with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'secrets.json')) as data_file:    
 # 	booking_id_secret = (json.load(data_file))['booking_id']
 
-def dump_csv(res, output_filename):
+def dump_csv(res, output_filename, from_date):
 	keys = res[0].keys()
 	final_output_filename = '_'.join(['Output_search_booking_id', 
 										output_filename, 
@@ -130,7 +130,7 @@ def booking_id_ctripplus(days, duration, d_type, output):
 			entry['booking_currency'] = booking.find('.//BookingPrice').get('Currency')
 			res.append(entry)
 
-	dump_csv(res, output)
+	dump_csv(res, output, from_date)
 
 	# # keys = res[0].keys()
 	# keys = res[0].keys()

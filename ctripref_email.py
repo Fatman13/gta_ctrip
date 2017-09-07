@@ -21,7 +21,7 @@ import datetime
 import re
 
 @click.command()
-@click.option('--days', default=0, type=int)
+@click.option('--days', default=24, type=int)
 @click.option('--duration', default=0, type=int)
 @click.option('--output', default='ctrip_email')
 # @click.option('--days', default=1, type=int)
@@ -47,7 +47,7 @@ def ctripref_email(days, duration, output):
 
 	# newest = max(glob.iglob('Output_search_booking_id_*.csv'), key=os.path.getctime)
 	newest = max(glob.iglob(target_filename), key=os.path.getctime)
-	subprocess.call(['python', 'search_item_hr.py', 
+	subprocess.call(['python', 'search_item_hr_ctrip.py', 
 									'--filename', newest,
 									'--output', output
 									])
@@ -62,7 +62,7 @@ def ctripref_email(days, duration, output):
 
 	# newest = max(glob.iglob('output_Search_item_hr_*.csv'), key=os.path.getctime)
 	newest = max(glob.iglob(target_filename), key=os.path.getctime)
-	subprocess.call(['python', 'hc.py', 
+	subprocess.call(['python', 'hc_ctrip.py', 
 								'--filename', newest,
 								'--output', output
 								])
@@ -101,4 +101,4 @@ def ctripref_email(days, duration, output):
 
 
 if __name__ == '__main__':
-	ctripref()
+	ctripref_email()

@@ -51,7 +51,7 @@ def is_bad_hotel(city_code, item_code):
 			return True
 	return False
 
-def dump_csv(res, output_filename):
+def dump_csv(res, output_filename, from_date):
 	keys = res[0].keys()
 	final_output_filename = '_'.join(['Output_search_item_hr', 
 										output_filename, 
@@ -180,7 +180,7 @@ def searh_item_hr_ctrip(filename, client, output):
 			entry = copy.deepcopy(booking)
 			res.append(entry)
 
-	dump_csv(res, output)
+	dump_csv(res, output, datetime.datetime.today().date())
 
 	# # keys = res[0].keys()
 	# keys = res[0].keys()
