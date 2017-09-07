@@ -179,10 +179,26 @@ def login_GCres(driver):
 CONFIRMED = 'Confirmed or Completed'
 HOTEL_CONFIRMED = 'Confirmed (registered )'
 
+
+def dump_csv(res, output_filename):
+	keys = res[0].keys()
+	final_output_filename = '_'.join(['Output_hotel_ref_', 
+										output_filename, 
+										from_date.strftime('%y%m%d'), 
+										datetime.datetime.now().strftime('%H%M')
+										]) + '.csv'
+	# with open('output_Search_booking_id_' + from_date.strftime('%y%m%d') + '_' + datetime.datetime.now().strftime('%H%M') + '_' + str(duration) + 'd.csv', 'w', newline='', encoding='utf-8') as output_file:
+	with open(final_output_filename, 'w', newline='', encoding='utf-8') as output_file:
+		dict_writer = csv.DictWriter(output_file, keys)
+		dict_writer.writeheader()
+		dict_writer.writerows(res)
+
+
 @click.command()
 @click.option('--filename', default='output_Search_item_hr_170830_1013.csv')
+@click.option('--output', default='ctrip_email')
 # @click.option('--days', default=15, type=int)
-def hc_ctrip(filename):
+def hc_ctrip(filename, output):
 
 	driver = webdriver.Firefox()
 	driver.implicitly_wait(10) 
@@ -334,12 +350,14 @@ def hc_ctrip(filename):
 
 	driver.quit()
 
-	keys = res[0].keys()
-	with open('output_hotel_ref_' + datetime.datetime.now().strftime('%y%m%d_%H%M') + '.csv', 'w', newline='', encoding='utf-8') as output_file:
-		dict_writer = csv.DictWriter(output_file, keys)
-		# dict_writer = csv.DictWriter(output_file, field_names)
-		dict_writer.writeheader()
-		dict_writer.writerows(res)
+	dump_csv(res, output)
+
+	# keys = res[0].keys()
+	# with open('output_hotel_ref_' + datetime.datetime.now().strftime('%y%m%d_%H%M') + '.csv', 'w', newline='', encoding='utf-8') as output_file:
+	# 	dict_writer = csv.DictWriter(output_file, keys)
+	# 	# dict_writer = csv.DictWriter(output_file, field_names)
+	# 	dict_writer.writeheader()
+	# 	dict_writer.writerows(res)
 
 if __name__ == '__main__':
 	hc_ctrip()

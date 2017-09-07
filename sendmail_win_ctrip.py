@@ -30,15 +30,22 @@ with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'secrets.json
 TO_REGISTER = 'Confirmed (to register)'
 
 @click.command()
-@click.option('--filename', default='output_hotel_ref_*.csv')
+@click.option('--filename', default='Output_hotel_ref_*.csv')
 @click.option('--email', default='no-reply@gta-travel.com')
+@click.option('--output', default='ctrip_email')
 # @click.option('--email', default='yu.leng@gta-travel.com')
 # @click.option('--duration', default=3, type=int)
 # @click.option('--days', default=1, type=int)
 def sendmail_win_ctrip(filename, email):
 
 	# today_date = datetime.datetime.today().date()
-	newest = max(glob.iglob('output_hotel_ref_*.csv'), key=os.path.getctime)
+
+	target_filename = '_'.join([ 'Output_hotel_ref',
+									output,
+								]) + '*.csv'
+
+	# newest = max(glob.iglob('output_hotel_ref_*.csv'), key=os.path.getctime)
+	newest = max(glob.iglob(target_filename), key=os.path.getctime)
 	today_date = datetime.datetime.now().strftime('%y%m%d')
 	try:
 		newest_date = re.search('output_hotel_ref_(\d+)', newest).group(1)
