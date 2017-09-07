@@ -50,7 +50,7 @@ def dump_csv(res, output_filename, from_date):
 # @click.option('--email', default='yu.leng@gta-travel.com')
 # @click.option('--duration', default=3, type=int)
 # @click.option('--days', default=1, type=int)
-def sendmail_win_ctrip(filename, email):
+def sendmail_win_ctrip(filename, email, output):
 
 	# today_date = datetime.datetime.today().date()
 
@@ -172,6 +172,10 @@ def sendmail_win_ctrip(filename, email):
 
 		booking['email_sent'] = 'Y'
 		res.append(booking)
+
+	if not res:
+		print('Warning: list empty')
+		return
 
 	dump_csv(res, output, datetime.datetime.today().date())
 
