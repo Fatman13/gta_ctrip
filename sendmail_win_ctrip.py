@@ -55,16 +55,18 @@ def sendmail_win_ctrip(filename, email, output):
 	# today_date = datetime.datetime.today().date()
 
 	target_filename = '_'.join([ 'Output_hotel_ref',
-									output,
+									output
 								]) + '*.csv'
 
 	# newest = max(glob.iglob('output_hotel_ref_*.csv'), key=os.path.getctime)
 	newest = max(glob.iglob(target_filename), key=os.path.getctime)
+	print('newest: ' + newest)
 	today_date = datetime.datetime.now().strftime('%y%m%d')
 	try:
-		newest_date = re.search('output_hotel_ref_(\d+)', newest).group(1)
+		newest_date = re.search( '_'.join(['Output_hotel_ref', output])+ '_(\d+)', newest).group(1)
 	except AttributeError:
 		newest_date = ''
+	print('newest date: ' + newest_date)
 	if newest_date != today_date:
 		print('Error: newest date != today date.. mannual intervention needed..')
 		return
@@ -102,6 +104,21 @@ def sendmail_win_ctrip(filename, email, output):
 					entry['hotel_email'] = row['hotel_email']
 				bookings.append(entry)
 			ids.add(row['gta_api_booking_id'])
+
+	test_entry = dict()
+	test_entry['client_booking_id'] = 'client_test_0908'
+	test_entry['agent_booking_id'] = 'agent_test_0908'
+	test_entry['gta_api_booking_id'] = '041/111222333'
+	test_entry['booking_status'] = 'Confirmed or Completed'
+	test_entry['booking_creation_date'] = '10/1/2017'
+	test_entry['booking_departure_date'] = '10/2/2017'
+	test_entry['booking_name'] = 'name_test_123'
+	test_entry['booking_net_price'] = '100'
+	test_entry['booking_currency'] = 'RMB'
+	test_entry['hotel_confirmation_#'] = '1234567890'
+	test_entry['hotel_confirmation_status'] = 'Confirmed (to register)'
+	test_entry['hotel_email'] = 'yu.leng@gta-travel.com'
+	bookings.append(test_entry)
 
 	print('Setting account..')
 	# Username in WINDOMAIN\username format. Office365 wants usernames in PrimarySMTPAddress
@@ -149,12 +166,13 @@ def sendmail_win_ctrip(filename, email, output):
 		recipient_email = booking['hotel_email']
 		body_text = 'Dear supplier, \n\n' + \
 			'This is a reminder that you haven’t registered hotel confirmation number with GTA for the following item: \n\n' + \
-			'GTA booking id: ' + str(booking['gta_api_booking_id']) + '\n\n' + \
-			'Please kindly login to https://hotels.gta-travel.com/gcres/auth/securelogin to register hotel confirmation number in our system. Thank you!\n\n' + \
+			'GTA booking id: ' + str(booking['gta_api_booking_id']) + '\n' + \
+			'Departure date: ' + str(booking['booking_departure_date']) + '\n\n' + \
+			'Please kindly login to https://hotels.gta-travel.com/gcres/auth/securelogin to register hotel confirmation number on our system. Thank you!\n\n' + \
 			'Best regards,\n' + \
 			'-GTA Travel\n' + \
 			'p.s. Please do not reply this email.'
-		title_text = '[Reminder] Please register confirmation number with GTA'
+		title_text = '[Reminder] Please register confirmation number with GTA - ' + str(booking['gta_api_booking_id'])
 
 		# Or, if you want a copy in e.g. the 'Sent' folder
 		m = Message(

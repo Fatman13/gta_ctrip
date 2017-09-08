@@ -182,7 +182,7 @@ HOTEL_CONFIRMED = 'Confirmed (registered )'
 
 def dump_csv(res, output_filename, from_date):
 	keys = res[0].keys()
-	final_output_filename = '_'.join(['Output_hotel_ref_', 
+	final_output_filename = '_'.join(['Output_hotel_ref', 
 										output_filename, 
 										from_date.strftime('%y%m%d'), 
 										datetime.datetime.now().strftime('%H%M')

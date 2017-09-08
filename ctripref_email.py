@@ -21,7 +21,7 @@ import datetime
 import re
 
 @click.command()
-@click.option('--days', default=24, type=int)
+@click.option('--days', default=3, type=int)
 @click.option('--duration', default=0, type=int)
 @click.option('--output', default='ctrip_email')
 # @click.option('--days', default=1, type=int)
