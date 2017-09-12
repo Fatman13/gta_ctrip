@@ -46,66 +46,14 @@ def dump_csv(res, output_filename, from_date):
 @click.command()
 @click.option('--filename', default='Output_hotel_ref_*.csv')
 @click.option('--email', default='no-reply@gta-travel.com')
-@click.option('--output', default='ctrip_email')
 # @click.option('--email', default='yu.leng@gta-travel.com')
 # @click.option('--duration', default=3, type=int)
 # @click.option('--days', default=1, type=int)
-def sendmail_win_ctrip(filename, email, output):
-
-	# today_date = datetime.datetime.today().date()
-
-	target_filename = '_'.join([ 'Output_hotel_ref',
-									output
-								]) + '*.csv'
-
-	# newest = max(glob.iglob('output_hotel_ref_*.csv'), key=os.path.getctime)
-	newest = max(glob.iglob(target_filename), key=os.path.getctime)
-	print('newest: ' + newest)
-	today_date = datetime.datetime.now().strftime('%y%m%d')
-	try:
-		newest_date = re.search( '_'.join(['Output_hotel_ref', output])+ '_(\d+)', newest).group(1)
-	except AttributeError:
-		newest_date = ''
-	print('newest date: ' + newest_date)
-	if newest_date != today_date:
-		print('Error: newest date != today date.. mannual intervention needed..')
-		return
-
-	print('newest date: ' + newest_date)
+def sendmail_win_test(filename, email):
 
 	bookings = []
 	res = []
-	# filename = 'gtaConfirmRefs_5867_2017-06-30_2017-07-07.csv'
-	with open(newest, encoding='utf-8-sig') as csvfile:
-		ids = set()
-		reader = csv.DictReader(csvfile)
-		for row in reader:
-			# pp.pprint(row['hotel_id'])
-			if row['gta_api_booking_id'] not in ids:
-				entry = dict()
-				entry['client_booking_id'] = row['client_booking_id']
-				entry['agent_booking_id'] = row['agent_booking_id']
-				entry['gta_api_booking_id'] = row['gta_api_booking_id']
-				entry['booking_status'] = row['booking_status']
-				entry['booking_creation_date'] = row['booking_creation_date']
-				entry['booking_departure_date'] = row['booking_departure_date']
-				entry['booking_name'] = row['booking_name']
-				entry['booking_net_price'] = row['booking_net_price']
-				entry['booking_currency'] = row['booking_currency']
-				entry['hotel_confirmation_#'] = ''
-				entry['hotel_confirmation_status'] = ''
-				if 'hotel_confirmation_#' in row:
-					entry['hotel_confirmation_#'] = row['hotel_confirmation_#']
-				if 'hotel_confirmation_status' in row:
-					entry['hotel_confirmation_status'] = row['hotel_confirmation_status']
-				# hotel email
-				entry['hotel_email'] = ''
-				if 'hotel_email' in row:
-					entry['hotel_email'] = row['hotel_email']
-				bookings.append(entry)
-			ids.add(row['gta_api_booking_id'])
 
-	# for test
 	test_entry = dict()
 	test_entry['client_booking_id'] = 'client_test_0908'
 	test_entry['agent_booking_id'] = 'agent_test_0908'
@@ -119,6 +67,51 @@ def sendmail_win_ctrip(filename, email, output):
 	test_entry['hotel_confirmation_#'] = ''
 	test_entry['hotel_confirmation_status'] = 'Confirmed (to register)'
 	test_entry['hotel_email'] = 'yu.leng@gta-travel.com'
+	bookings.append(test_entry)
+
+	test_entry = dict()
+	test_entry['client_booking_id'] = 'client_test_0908'
+	test_entry['agent_booking_id'] = 'agent_test_0908'
+	test_entry['gta_api_booking_id'] = '041/111222333'
+	test_entry['booking_status'] = 'Confirmed or Completed'
+	test_entry['booking_creation_date'] = '10/1/2017'
+	test_entry['booking_departure_date'] = '10/2/2017'
+	test_entry['booking_name'] = 'name_test_123'
+	test_entry['booking_net_price'] = '100'
+	test_entry['booking_currency'] = 'RMB'
+	test_entry['hotel_confirmation_#'] = ''
+	test_entry['hotel_confirmation_status'] = 'Confirmed (to register)'
+	test_entry['hotel_email'] = 'william.feng@gta-travel.com'
+	bookings.append(test_entry)
+
+	test_entry = dict()
+	test_entry['client_booking_id'] = 'client_test_0908'
+	test_entry['agent_booking_id'] = 'agent_test_0908'
+	test_entry['gta_api_booking_id'] = '041/222333444'
+	test_entry['booking_status'] = 'Confirmed or Completed'
+	test_entry['booking_creation_date'] = '10/1/2017'
+	test_entry['booking_departure_date'] = '10/2/2017'
+	test_entry['booking_name'] = 'name_test_123'
+	test_entry['booking_net_price'] = '100'
+	test_entry['booking_currency'] = 'RMB'
+	test_entry['hotel_confirmation_#'] = ''
+	test_entry['hotel_confirmation_status'] = 'Confirmed (to register)'
+	test_entry['hotel_email'] = 'william.feng@gta-travel.com'
+	bookings.append(test_entry)
+
+	test_entry = dict()
+	test_entry['client_booking_id'] = 'client_test_0908'
+	test_entry['agent_booking_id'] = 'agent_test_0908'
+	test_entry['gta_api_booking_id'] = '041/333444555'
+	test_entry['booking_status'] = 'Confirmed or Completed'
+	test_entry['booking_creation_date'] = '10/1/2017'
+	test_entry['booking_departure_date'] = '10/2/2017'
+	test_entry['booking_name'] = 'name_test_123'
+	test_entry['booking_net_price'] = '100'
+	test_entry['booking_currency'] = 'RMB'
+	test_entry['hotel_confirmation_#'] = ''
+	test_entry['hotel_confirmation_status'] = 'Confirmed (to register)'
+	test_entry['hotel_email'] = 'william.feng@gta-travel.com'
 	bookings.append(test_entry)
 
 	print('Setting account..')
@@ -171,8 +164,8 @@ def sendmail_win_ctrip(filename, email, output):
 			'Departure date: ' + str(booking['booking_departure_date']) + '\n\n' + \
 			'Please kindly login to https://hotels.gta-travel.com/gcres/auth/securelogin to register hotel confirmation number on our system. Thank you!\n\n' + \
 			'Best regards,\n' + \
-			'-GTA Travel\n\n' + \
-			'p.s. Please do not reply to this email.'
+			'-GTA Travel\n' + \
+			'p.s. Please do not reply this email.'
 		title_text = '[Reminder] Please register confirmation number with GTA - ' + str(booking['gta_api_booking_id'])
 
 		# Or, if you want a copy in e.g. the 'Sent' folder
@@ -196,7 +189,7 @@ def sendmail_win_ctrip(filename, email, output):
 		print('Warning: list empty')
 		return
 
-	dump_csv(res, output, datetime.datetime.today().date())
+	# dump_csv(res, output, datetime.datetime.today().date())
 
 	# fromaddr = "tctctcly@gmail.com"
 	# # toaddr = "yu.leng@gta-travel.com, l"
@@ -232,4 +225,4 @@ def sendmail_win_ctrip(filename, email, output):
 	# # server.quit()
 
 if __name__ == '__main__':
-	sendmail_win_ctrip()
+	sendmail_win_test()

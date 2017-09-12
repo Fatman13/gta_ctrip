@@ -20,6 +20,12 @@ import sys
 import datetime
 import re
 
+# hua shi shui jiao
+def hua_style_sleep():
+	for i in range(3):
+		print('sleeping..' + str(i))
+		time.sleep(1)
+
 @click.command()
 @click.option('--days', default=3, type=int)
 @click.option('--duration', default=0, type=int)
@@ -37,9 +43,7 @@ def ctripref_email(days, duration, output):
 									'--output', output
 									])
 
-	for i in range(3):
-		print('sleeping.. ctrip')
-		time.sleep(1)
+	hua_style_sleep()
 
 	target_filename = '_'.join([ 'Output_search_booking_id',
 									output
@@ -52,9 +56,7 @@ def ctripref_email(days, duration, output):
 									'--output', output
 									])
 
-	for i in range(3):
-		print('sleeping..')
-		time.sleep(1)
+	hua_style_sleep()
 
 	target_filename = '_'.join([ 'Output_search_item_hr',
 									output
@@ -67,33 +69,7 @@ def ctripref_email(days, duration, output):
 								'--output', output
 								])
 
-	for i in range(3):
-		print('sleeping..')
-		time.sleep(1)
-
-	# newest = max(glob.iglob('output_Search_item_hr_*.csv'), key=os.path.getctime)
-	# subprocess.call(['python', 'sendmail.py', '--filename', 'output_hotel_ref_*.csv', '--title', 'Ctrip_hotel_ref'])
-
-	# newest = max(glob.iglob('output_hotel_ref_*.csv'), key=os.path.getctime)
-
-	# today_date = datetime.datetime.now().strftime('%y%m%d')
-	# try:
-	# 	newest_date = re.search('output_hotel_ref_(\d+)', newest).group(1)
-	# except AttributeError:
-	# 	newest_date = ''
-	# if newest_date != today_date:
-	# 	print('Error: newest date != today date.. mannual intervention needed..')
-	# 	return
-
-	# print('newest date: ' + newest_date)
-
-	# while True:
-	# 	sys.stdout.write("Would you like to proceed to call Ctrip's update hotel res no API? " + newest + " [Y/N]")
-	# 	choice = input().lower()
-	# 	if choice == 'y' or choice == 'yes':
-	# 		break
-	# 	if choice == 'n' or choice == 'no':
-	# 		return
+	hua_style_sleep()
 
 	subprocess.call(['python', 'sendmail_win_ctrip.py', 
 									'--output', output

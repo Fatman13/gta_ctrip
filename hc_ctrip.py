@@ -245,6 +245,9 @@ def hc_ctrip(filename, output):
 			if not cookies:
 				print('Fatal: Failed to get cookies...')
 				break  
+			if len(cookies.items()) <= 1:
+				print('Fatal: Login may have failed...')
+				break
 
 		if CONFIRMED not in booking['booking_status']:
 			print('Booking not confirmed.. skipping..')
