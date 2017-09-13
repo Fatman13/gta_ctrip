@@ -82,6 +82,8 @@ def sendmail_win_test(filename, email):
 	test_entry['hotel_confirmation_#'] = ''
 	test_entry['hotel_confirmation_status'] = 'Confirmed (to register)'
 	test_entry['hotel_email'] = 'william.feng@gta-travel.com'
+	# test_entry['hotel_email'] = 'Emilie.wang@gta-travel.com'
+	
 	bookings.append(test_entry)
 
 	test_entry = dict()
@@ -97,6 +99,7 @@ def sendmail_win_test(filename, email):
 	test_entry['hotel_confirmation_#'] = ''
 	test_entry['hotel_confirmation_status'] = 'Confirmed (to register)'
 	test_entry['hotel_email'] = 'william.feng@gta-travel.com'
+	# test_entry['hotel_email'] = 'Emilie.wang@gta-travel.com'
 	bookings.append(test_entry)
 
 	test_entry = dict()
@@ -112,6 +115,7 @@ def sendmail_win_test(filename, email):
 	test_entry['hotel_confirmation_#'] = ''
 	test_entry['hotel_confirmation_status'] = 'Confirmed (to register)'
 	test_entry['hotel_email'] = 'william.feng@gta-travel.com'
+	# test_entry['hotel_email'] = 'Emilie.wang@gta-travel.com'
 	bookings.append(test_entry)
 
 	print('Setting account..')
