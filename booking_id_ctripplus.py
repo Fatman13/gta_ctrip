@@ -128,6 +128,10 @@ def booking_id_ctripplus(days, duration, d_type, output):
 			entry['booking_name'] = booking.find('.//BookingName').text
 			entry['booking_net_price'] = booking.find('.//BookingPrice').get('Nett')
 			entry['booking_currency'] = booking.find('.//BookingPrice').get('Currency')
+
+			# fix client with multi ids
+			entry['client_name'] = client
+			
 			res.append(entry)
 
 	dump_csv(res, output, from_date)

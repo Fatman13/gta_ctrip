@@ -76,7 +76,8 @@ def searh_item_hr_ctrip(filename, client, output):
 
 	agent_secret = None
 	with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'secrets.json')) as data_file:    
-		agent_secret = (json.load(data_file))[client]
+		# agent_secret = (json.load(data_file))[client]
+		agent_secret = json.load(data_file)
 
 	# validate_d(from_d)
 	# validate_d(to_d)
@@ -113,6 +114,9 @@ def searh_item_hr_ctrip(filename, client, output):
 				entry['booking_currency'] = row['booking_currency']
 				entry['hotel_confirmation_#'] = ''
 				entry['hotel_confirmation_status'] = ''
+				entry['client_name'] = ''
+				if 'client_name' in row:
+					entry['client_name'] = row['client_name']
 				if 'hotel_confirmation_#' in row:
 					entry['hotel_confirmation_#'] = row['hotel_confirmation_#']
 				if 'hotel_confirmation_status' in row:
@@ -121,12 +125,20 @@ def searh_item_hr_ctrip(filename, client, output):
 			ids.add(row['gta_api_booking_id'])
 
 	search_tree = ET.parse(os.path.join(os.getcwd(), 'SearchBookingItemRequest.xml'))
-	search_tree.find('.//RequestorID').set('Client', agent_secret['id'])
-	search_tree.find('.//RequestorID').set('EMailAddress', agent_secret['email'])
-	search_tree.find('.//RequestorID').set('Password', agent_secret['password'])
+	# search_tree.find('.//RequestorID').set('Client', agent_secret['id'])
+	# search_tree.find('.//RequestorID').set('EMailAddress', agent_secret['email'])
+	# search_tree.find('.//RequestorID').set('Password', agent_secret['password'])
 
 	for counter, booking in enumerate(bookings):
 		pp.pprint('Searching booking id: ' + str(counter) + ': ' + booking['gta_api_booking_id'])
+
+		if 'client_name' not in booking.keys():
+			print('Error: No client name...')
+			continue
+
+		search_tree.find('.//RequestorID').set('Client', agent_secret[booking['client_name']]['id'])
+		search_tree.find('.//RequestorID').set('EMailAddress', agent_secret[booking['client_name']]['email'])
+		search_tree.find('.//RequestorID').set('Password', agent_secret[booking['client_name']]['password'])
 
 		if not booking['hotel_confirmation_#'] and booking['hotel_confirmation_#'] != '':
 			print('have hotel confirmation # already.. skipping')
